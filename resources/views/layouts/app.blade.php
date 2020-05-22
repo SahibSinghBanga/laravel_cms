@@ -73,8 +73,79 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+
+            @auth
+
+            <div class="container">
+
+                @if(session()->has('success'))
+
+                    <div class="alert alert-success">
+
+                        {{ session()->get('success') }}
+
+                    </div>
+
+                @endif
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                        <ul class="list-group">
+
+                            <li class="list-group-item">
+
+                                <a href="/posts">Posts</a>
+
+                            </li>
+
+                            <li class="list-group-item">
+
+                                <a href="{{ route('categories.index') }}">Categories</a>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                    <div class="col-md-8">
+
+                        @yield('content')
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @else
+
+                @yield('content')
+
+            @endauth
+
         </main>
     </div>
+
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+    @yield('scripts')
+
+    <script>
+
+        $("document").ready(function(){
+            setTimeout(function(){
+            $("div.alert").remove();
+            }, 5000 );
+
+        });
+
+    </script>
 </body>
 </html>
