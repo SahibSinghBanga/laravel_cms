@@ -9,15 +9,20 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <style>
+        .btn-info {
+            color: #fff;
+        }
+    </style>
+
+    @yield('css')
 </head>
 <body>
     <div id="app">
@@ -79,51 +84,42 @@
             <div class="container">
 
                 @if(session()->has('success'))
-
                     <div class="alert alert-success">
-
                         {{ session()->get('success') }}
-
                     </div>
 
                 @endif
 
                 <div class="row">
-
                     <div class="col-md-4">
-
                         <ul class="list-group">
 
                             <li class="list-group-item">
-
-                                <a href="/posts">Posts</a>
-
+                                <a href="{{ route('posts.index') }}">Posts</a>
                             </li>
 
                             <li class="list-group-item">
-
                                 <a href="{{ route('categories.index') }}">Categories</a>
-
                             </li>
+                        </ul>
 
+                        <ul class="list-group mt-5">
+                            <li class="list-group-item">
+                                <a href="{{ route('trashed-posts.index') }}">Trashed Posts</a>
+                            </li>
                         </ul>
 
                     </div>
 
                     <div class="col-md-8">
-
                         @yield('content')
-
                     </div>
 
                 </div>
-
             </div>
 
             @else
-
                 @yield('content')
-
             @endauth
 
         </main>
@@ -131,9 +127,12 @@
 
 
     <!-- JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous"></script> -->
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
 
     @yield('scripts')
 
@@ -143,7 +142,6 @@
             setTimeout(function(){
             $("div.alert").remove();
             }, 5000 );
-
         });
 
     </script>

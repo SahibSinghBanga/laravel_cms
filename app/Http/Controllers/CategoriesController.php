@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Category;
+use App\Post;
 use App\Http\Requests\Categories\CreateCategoriesRequest;
 use App\Http\Requests\Categories\UpdateCategoriesRequest;
 
