@@ -80,6 +80,7 @@ class CategoriesController extends Controller
      */
     public function update(UpdateCategoriesRequest $request, Category $category)
     {
+
         $category->update([
             'name' => $request->name
         ]);
@@ -99,6 +100,14 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
+
+        // If Category has a post, Don't allow deletion of category
+        if($category->posts->count() > 0) {
+            session()->flash('error', 'Category cannot be deleted, because it has some posts.');
+
+            return redirect()->back();
+        }
+
         $category->delete();
 
         session()->flash('success', 'Category deleted successfully.');

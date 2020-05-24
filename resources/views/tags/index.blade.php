@@ -31,7 +31,7 @@
                         {{ $tag->name }}
                     </td>
                     <td>
-                        0
+                        {{ $tag->posts->count() }}
                     </td>
                     <td>
                         <a
@@ -102,7 +102,7 @@
         </div>
     </div>
     @else
-    <h3 class="text-center">No tags Yet</h3>
+    <h3 class="text-center">No Tags Yet</h3>
     @endif
 </div>
 

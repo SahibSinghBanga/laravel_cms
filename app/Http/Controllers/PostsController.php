@@ -7,6 +7,7 @@ use App\Http\Requests\Posts\CreatePostsRequest;
 use App\Http\Requests\Posts\UpdatePostRequest;
 use App\Post;
 use App\Category;
+use App\Tag;
 
 class PostsController extends Controller
 {
@@ -33,7 +34,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('posts.create')->with('categories', Category::all());
+        return view('posts.create')->with('categories', Category::all())->with('tags', Tag::all());
     }
 
     /**
@@ -44,11 +45,12 @@ class PostsController extends Controller
      */
     public function store(CreatePostsRequest $request)
     {
+
         // Upload image to the storage
         $image = $request->image->store('posts');
 
         // Create Post
-        Post::create([
+        $post = Post::create([
             'title' => $request->title,
             'description' => $request->description,
             'content' => $request->content,
@@ -56,6 +58,11 @@ class PostsController extends Controller
             'published_at' => $request->published_at,
             'category_id' => $request->category
         ]);
+
+        if($request->tags) {
+            // Can use attach() because of belongsToMany R/L
+            $post->tags()->attach($request->tags);
+        }
 
         // Flash Message
         session()->flash('success', 'Post created successfully.');
@@ -83,7 +90,7 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.create')->with('post', $post)->with('categories', Category::all());
+        return view('posts.create')->with('post', $post)->with('categories', Category::all())->with('tags', Tag::all());
     }
 
     /**
@@ -95,7 +102,7 @@ class PostsController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $data = $request->only(['title', 'description', 'published_at', 'content']);
+        $data = $request->only(['title', 'description', 'published_at', 'content', 'category']);
         // Check if new image
         if($request->hasFile('image')) {
             // Upload it
@@ -105,6 +112,24 @@ class PostsController extends Controller
             $post->deleteImage();
 
             $data['image'] = $image;
+        }
+
+        // Adding category_id manually
+        $data['category_id'] = $request->category;
+
+        /**
+         *
+         * What This Is Gonna Do
+         *
+         * 1. Add Only Newly Added Tags,
+         * 2. Remove Duplicates from previous list ( if any )
+         * 3. If no new tag selected, Then previous ones are selected automatically
+         * 4. This whole thing with sync() method, Only available for belongsToMany R/L
+         *
+        **/
+        if($request->tags) {
+            // sync(): Only available for belongsToMany R/L
+            $post->tags()->sync($request->tags);
         }
 
         // Update attributes

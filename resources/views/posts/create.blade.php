@@ -1,4 +1,6 @@
-@extends('layouts.app') @section('content')
+@extends('layouts.app')
+
+@section('content')
 <div class="card card-default">
     <div class="card-header">
         {{ isset($post) ? "Update Post" : "Create Post" }}
@@ -96,6 +98,26 @@
                 </select>
             </div>
 
+            <!-- Since Tags are Not Compulsary -->
+            @if($tags->count() > 0)
+            <div class="form-group">
+                <lable for="tags">Tags</lable>
+                <select name="tags[]" id="tags" class="form-control tags-selector" multiple>
+                    @foreach($tags as $tag)
+                        <option value="{{ $tag->id }}"
+                            @if(isset($post))
+                                @if($post->hasTag($tag->id))
+                                    selected
+                                @endif
+                            @endif
+                        >
+                            {{ $tag->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+
             <div class="form-group">
                 <button type="submit" class="btn btn-success">
                     {{ isset($post) ? "Update Post" : "Create Post" }}
@@ -109,10 +131,17 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.1/trix.js"
     crossorigin="anonymous"
 ></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
+    // For Date Selection
     flatpickr("#published_at", {
         enableTime: true,
+    });
+
+    // Select2
+    $(document).ready(function() {
+        $('.tags-selector').select2();
     });
 </script>
 @endsection @section('css')
@@ -125,4 +154,5 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
 />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
