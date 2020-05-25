@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+@extends('layouts.app') @section('content')
 
 <div class="card card-default">
     <div class="card-header">
@@ -22,7 +20,7 @@
                 @foreach($users as $user)
                 <tr>
                     <td>
-
+                        <img src="{{ Gravatar::src($user->email) }}" width="50px" height="50px" style="border-radius: 50%;" alt="">
                     </td>
                     <td>
                         {{ $user->name }}
@@ -32,7 +30,18 @@
                     </td>
                     <td>
                         @if(!$user->isAdmin())
-                            <button class="btn btn-success btn-sm">Make Admin</button>
+                        <form
+                            action="{{ route('users.make-admin', $user->id) }}"
+                            method="POST"
+                        >
+                            @csrf
+                            <button
+                                type="submit"
+                                class="btn btn-success btn-sm"
+                            >
+                                Make Admin
+                            </button>
+                        </form>
                         @endif
                     </td>
                 </tr>
@@ -40,11 +49,9 @@
             </tbody>
         </table>
         @else
-            <h3 class="text-center">No Users Yet</h3>
+        <h3 class="text-center">No Users Yet</h3>
         @endif
     </div>
-
-
 </div>
 
 @endsection

@@ -6,8 +6,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-
-
 Route::middleware(['auth'])->group(function() {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('categories', 'CategoriesController');
@@ -18,5 +16,8 @@ Route::middleware(['auth'])->group(function() {
 });
 
 Route::middleware(['auth', 'admin'])->group(function() {
+    Route::get('users/profile', 'UsersController@edit')->name('users.edit-profile');
+    Route::put('users/profile', 'UsersController@update')->name('users.update-profile');
     Route::get('users', 'UsersController@index')->name('users.index');
+    Route::post('users/{user}/make-admin', 'UsersController@makeAdmin')->name('users.make-admin');
 });
