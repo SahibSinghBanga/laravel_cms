@@ -137,6 +137,7 @@
     // For Date Selection
     flatpickr("#published_at", {
         enableTime: true,
+        enableSeconds: true
     });
 
     // Select2

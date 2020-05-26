@@ -1,8 +1,11 @@
 <?php
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\Blog\BlogPostsController;
+
+Route::get('/', 'WelcomeController@index')->name('welcome');
+Route::get('blog/posts/{post}', [BlogPostsController::class, 'show'])->name('blog.show');
+Route::get('blog/category/{category}', [BlogPostsController::class, 'category'])->name('blog.category');
+Route::get('blog/tag/{tag}', [BlogPostsController::class, 'tag'])->name('blog.tag');
 
 Auth::routes();
 
