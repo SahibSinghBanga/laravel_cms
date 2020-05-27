@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
     <title>
         @yield('title')
@@ -85,6 +85,10 @@
     <!-- Scripts -->
     <script src="{{ asset('js/page.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5ece939c8e9a3392"></script>
+
 
 </body>
 
