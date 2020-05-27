@@ -1,5 +1,9 @@
 <?php
 
+if (env('APP_ENV') === 'production') {
+    URL::forceSchema('https');
+}
+
 use App\Http\Controllers\Blog\BlogPostsController;
 
 Route::get('/', 'WelcomeController@index')->name('welcome');
